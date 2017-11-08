@@ -1,21 +1,18 @@
 buildscript {
 	ext {
 		springBootVersion = '1.5.8.RELEASE'
-		gradleDockerVersion = '1.2'
 	}
 	repositories {
 		mavenCentral()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath("se.transmode.gradle:gradle-docker:${gradleDockerVersion}")
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'docker'
 
 jar {
 	baseName = 'config-server'
@@ -38,23 +35,10 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.security:spring-security-rsa')
 	testCompile('org.springframework.security:spring-security-test')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('junit:junit')
 }
 
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
-}
-
-task buildDocker(type: Docker, dependsOn: build) {
-	applicationName = jar.baseName
-	dockerfile = file('Dockerfile')
-	doFirst {
-		copy {
-			from jar
-			into "${stageDir}/target"
-		}
 	}
 }
