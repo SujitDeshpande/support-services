@@ -28,7 +28,7 @@ repositories {
 }
 
 task buildDocker(type: Docker) {
-    baseImage = 'develar/java:latest'
+    baseImage = 'openjdk:8-jdk-alpine'
     push = project.hasProperty('push')
     tag = 'fsdapps/config-server'
     addFile {
